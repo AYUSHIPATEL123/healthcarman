@@ -1,0 +1,14 @@
+Package                       Version
+----------------------------- -------
+asgiref                       3.9.1
+Django                        5.2.5
+djangorestframework           3.16.1
+djangorestframework_simplejwt 5.5.1
+mysqlclient                   2.2.7
+pip                           25.2
+PyJWT                         2.10.1
+rest-framework-simplejwt      0.0.2
+setuptools                    65.5.0
+sqlparse                      0.5.3
+typing                        3.7.4.3
+tzdata                        2025.2
