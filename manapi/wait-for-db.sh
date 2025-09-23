@@ -1,12 +1,18 @@
 #!/bin/sh
+# wait-for-db.sh
 set -e
 
-echo "⏳Waiting for MySQL at $DB_HOST:$DB_PORT..."
+host='db'
+shift
+cmd="$@"
 
-until nc -z "$DB_HOST" "$DB_PORT"; do 
-    sleep 1
+echo "⏳Waiting for MySQL at $host..."
+
+until mysql -h "$host" -u"$MYSQL_USER" -p"$MYSQL_PASSWORD" -e 'SELECT 1' &> /dev/null; do
+    >&2 echo "MySQL is unavailable - sleeping" 
+    sleep 2
 done 
 
-echo "✅MySQL is up - executing command"
+>&2 echo "✅ MySQL is up - executing command"
 
-exec "$@"
+exec $cmd 
