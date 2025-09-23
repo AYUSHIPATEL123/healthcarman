@@ -3,7 +3,6 @@
 set -e
 
 host='db'
-shift
 cmd="$@"
 
 echo"⏳Waiting for MySQL at $host..."
