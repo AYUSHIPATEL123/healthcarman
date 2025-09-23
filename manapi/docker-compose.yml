@@ -1,0 +1,53 @@
+version: '3.11'
+
+services:
+  db:
+    image: mysql:8.0  
+    container_name: manapi_db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: 123654A@app
+      MYSQL_DATABASE: world
+      MYSQL_USER: manapiuser
+      MYSQL_PASSWORD: manapipass
+      TZ: Asia/Kolkata
+    healthcheck:
+        test: ["CMD","mysqladmin","ping","-h","localhost"]
+        interval: 10s
+        timeout: 5s
+        retries: 5
+
+    ports:
+      - "3307:3306"
+    volumes:
+      - manapi_data:/var/lib/mysql
+    # command: ["executable", "arg"]   
+
+  web:
+    build: .
+    container_name: manapi
+    restart: always
+
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+    command: >
+        sh -c "./wait-for-db.sh
+        python manage.py makemigrations && 
+        python manage.py migrate &&
+        python manage.py runserver 0.0.0.0:8000
+        "
+    depends_on:
+      db:
+        condition: service_healthy
+
+    environment:
+      DB_NAME: world
+      DB_USER: manapiuser
+      DB_PASSWORD: manapipass
+      DB_HOST: db
+      DB_PORT: 3306
+      TZ: Asia/Kolkata
+volumes:
+  manapi_data:

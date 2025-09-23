@@ -15,7 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-
+import os
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
@@ -82,13 +82,13 @@ DATABASES = {
     #     'NAME': BASE_DIR / 'db.sqlite3',
     # } 
     'default': {
-                'ENGINE': 'django.db.backends.mysql',
-                'NAME': 'yourdatabasename',
-                'USER': 'root',
-                'PASSWORD': 'yourdatabasepassword',
-                'HOST': 'localhost',  # Or the IP address of your MySQL server
-                'PORT': '3306',       # Default MySQL port
-            }
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv('DB_NAME', 'world'),
+        'USER': os.getenv('DB_USER', 'manapiuser'),
+        'PASSWORD': os.getenv('DB_PASSWORD', 'manapipass'),
+        'HOST': os.getenv('DB_HOST', 'db'),   # must be "db", not "localhost"
+        'PORT': os.getenv('DB_PORT', '3306'),
+    }
 }
 
 
