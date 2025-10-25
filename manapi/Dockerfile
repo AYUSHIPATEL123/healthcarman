@@ -14,7 +14,10 @@ RUN chmod +x /app/wait-for-db.sh
 
 COPY . .
 
+# Collect static files inside the image
+RUN python manage.py collectstatic --noinput || echo "Skipping collectstatic"
+
 EXPOSE 8000
 
 # ENTRYPOINT ["python3"]
-CMD ["sh", "-c", "./wait-for-db.sh && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "./wait-for-db.sh && python manage.py migrate && python manage.py collectstatic --noinput && python manage.py runserver 0.0.0.0:8000"]
